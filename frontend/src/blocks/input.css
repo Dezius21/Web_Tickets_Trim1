@@ -1,0 +1,37 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  margin-bottom: 1rem;
+}
+
+.field label { 
+  font-weight: 700; 
+}
+
+.field input {
+  padding: .65rem .85rem;
+  border: 2px solid var(--color-borde);
+  border-radius: 4px;
+  font-size: 1rem;
+  background: #fff;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.field input:focus {
+  outline: none;
+  box-shadow: 3px 3px 0px var(--color-principal);
+  transform: translate(-1px, -1px);
+}
+
+.field input[aria-invalid="true"] { 
+  border-color: #b91c1c; 
+  box-shadow: 3px 3px 0px #b91c1c;
+}
+
+.field-error {
+  margin: 0;
+  color: #b91c1c;
+  font-weight: 600;
+  font-size: .9rem;
+}

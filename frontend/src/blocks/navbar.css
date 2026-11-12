@@ -46,6 +46,10 @@
     font-weight: bold; 
 }
 
+.navbar-user { 
+  align-self: center; 
+}
+
 .navbar-actions { 
     display: flex; 
     gap: .5rem; 

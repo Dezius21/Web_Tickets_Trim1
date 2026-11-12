@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import Input from "../Input";
 import Button from "../Button";
 
 export default function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [datos, setDatos] = useState({ email: "", password: "" });
   const [errores, setErrores] = useState({});
   const [enviando, setEnviando] = useState(false);
@@ -35,9 +40,11 @@ export default function Login() {
 
     setEnviando(true);
     try {
-      // TODO: sustituir por la llamada real al backend
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      console.log("Login con", datos.email);
+      const usuario = await login(datos.email, datos.password);
+      const destino =
+        location.state?.from?.pathname ||
+        (usuario.rol === "agente" ? "/soporte/tickets" : "/cuenta/tickets");
+      navigate(destino, { replace: true });
     } catch (err) {
       setErrorGeneral("No se pudo iniciar sesión. Inténtalo de nuevo.");
     } finally {

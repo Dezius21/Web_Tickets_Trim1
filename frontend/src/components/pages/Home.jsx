@@ -1,5 +1,5 @@
-import Button from "../components/Button";
-import Card from "../components/Card";
+import Button from "../Button";
+import Card from "../Card";
 
 const pasos = [
   { titulo: "1. Abre un ticket", texto: "Cuéntanos qué hay que arreglar y qué recursos necesitas." },

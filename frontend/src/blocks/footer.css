@@ -1,0 +1,25 @@
+.footer {
+  background: var(--color-suave);
+  border-top: 1px solid var(--color-borde); 
+  padding: 1.5rem 0;
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.footer p { 
+    margin: 0; 
+}
+
+.footer nav { 
+    display: flex; 
+    gap: 1rem; 
+}
+
+.footer a { 
+    color: var(--color-texto); 
+}

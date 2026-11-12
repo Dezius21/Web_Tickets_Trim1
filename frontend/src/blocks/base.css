@@ -1,0 +1,27 @@
+:root {
+  --color-principal: #1d4ed8;
+  --color-principal-oscuro: #1e3a8a;
+  --color-texto: #0c1015;
+  --color-suave: #dbdbdb;
+  --color-borde: #787878;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: var(--color-texto);
+  line-height: 1.5;
+}
+
+* { 
+  box-sizing: border-box; 
+}
+
+h1, h2, h3 { 
+  line-height: 1.2; 
+}
+
+:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}

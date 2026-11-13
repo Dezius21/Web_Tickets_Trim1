@@ -1,31 +1,14 @@
-.skip { 
-    position: absolute; 
-    left: -999px; 
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  padding: 0.5rem 1rem;
+  background: var(--color-accent);
+  color: var(--color-text);
+  border-radius: 0.5rem;
+  z-index: 100;
 }
 
-.skip:focus { 
-    left: 1rem; 
-    top: 1rem; 
-    background: #fff; 
-    padding: .5rem; 
-    z-index: 200; 
-}
-
-.container { 
-    width: 100%; 
-    max-width: 1000px; 
-    margin: 0 auto; 
-    padding: 0 1rem; 
-}
-
-.app { 
-    min-height: 100vh; 
-    display: flex; 
-    flex-direction: column;
-}
-
-.app main { 
-    flex: 1;
-    display: flex;
-    flex-direction: column; 
+.skip:focus {
+  top: 1rem;
 }

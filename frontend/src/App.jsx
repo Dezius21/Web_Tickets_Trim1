@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layouts/Layout";
 import Home from "./components/pages/Home";
 import Login from "./components/pages/Login";
-import Registro from "./components/pages/Registro";
+import Register  from "./components/pages/Register";
 import RutaProtegida from "./components/ProtectedRoute";
 
 export default function App() {
@@ -12,7 +12,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/registro" element={<Registro />} />
+          <Route path="/register" element={<Register  />} />
 
           <Route element={<RutaProtegida roles={["cliente"]} />}>
             <Route path="/cuenta/tickets" element={<h1>Mis tickets</h1>} />

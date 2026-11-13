@@ -1,65 +1,81 @@
+import "../../blocks/home.css";
 import Button from "../Button";
 import Card from "../Card";
 
+
 const pasos = [
-  { titulo: "1. Abre un ticket", texto: "Cuéntanos qué hay que arreglar y qué recursos necesitas." },
-  { titulo: "2. Te asignamos un agente", texto: "Una persona del equipo revisa tu solicitud y te responde." },
-  { titulo: "3. Sigue el estado", texto: "Consulta el historial y el estado de tu ticket cuando quieras." },
+  {
+    titulo: "Crea tu cuenta",
+    texto: "Regístrate como residente o inquilino en menos de un minuto.",
+  },
+  {
+    titulo: "Pide servicios",
+    texto: "Solicita limpieza, mantenimiento u otros servicios desde la web.",
+  },
+  {
+    titulo: "Reporta incidencias",
+    texto: "Avisa de una avería y sigue su estado hasta que se resuelva.",
+  },
+  {
+    titulo: "Seguimiento Post-Incidencias",
+    texto: "Opcion a revision post incidencia"
+  }
 ];
 
-const categorias = [
-  { titulo: "Fontanería", texto: "Fugas, grifos, cisternas y desatascos." },
-  { titulo: "Electricidad", texto: "Enchufes, luces y cuadros eléctricos." },
-  { titulo: "Carpintería", texto: "Puertas, ventanas y muebles." },
-  { titulo: "Pintura", texto: "Paredes, humedades y acabados." },
+const servicios = [
+  { icon: "🧹", titulo: "Limpieza", texto: "Solicita la limpieza de tu habitación o zonas comunes." },
+  { icon: "🔧", titulo: "Mantenimiento", texto: "Avisa de averías de fontanería, electricidad o mobiliario." },
+  { icon: "🧺", titulo: "Lavandería", texto: "Reserva turno y consulta el estado de tu servicio." },
+  { icon: "⚙️", titulo: "Otros", texto: "Reporta problemas y recibe soporte." },
 ];
 
-export default function Home() {
-  return (
+
+export default function Home(){
+  return(
     <>
-      <section className="hero" aria-labelledby="hero-titulo">
-        <div className="container">
-          <h1 id="hero-titulo">Soluciona los arreglos de tu casa</h1>
-          <p className="hero-texto">
-            Pide ayuda para fontanería, electricidad y más. Abre un ticket,
-            te asignamos a una persona y sigues todo el proceso desde tu cuenta.
-          </p>
-          <div className="hero-botones">
-            <Button to="/registro">Crear cuenta</Button>
-            <Button to="/catalogo" variant="secondary">Ver catálogo</Button>
-          </div>
-        </div>
-      </section>
+    <section className="hero">
+      <h1>Tu residencia o alquiler, sin complicaciones</h1>
+      <p>
+          Pide servicios y reporta incidencias en un solo lugar, para
+          residencias estudiantiles y alquileres.
+      </p>
+      <div className="hero-actions">
+        <Button to="/register">Crear cuenta</Button>
+        <Button to="/login" variant="secondary">Iniciar Sesion</Button>
+      </div>
+    </section>
 
-      <section className="seccion container" aria-labelledby="pasos-titulo">
-        <h2 id="pasos-titulo">Cómo funciona</h2>
-        <div className="grid grid-3">
-          {pasos.map((p) => (
-            <Card key={p.titulo} titulo={p.titulo}>
-              <p>{p.texto}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
+    <section className="how">
 
-      <section className="seccion container" aria-labelledby="cat-titulo">
-        <h2 id="cat-titulo">¿Qué puedes pedir?</h2>
-        <div className="grid grid-4">
-          {categorias.map((c) => (
-            <Card key={c.titulo} titulo={c.titulo}>
-              <p>{c.texto}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
+      <h2>Como funciona</h2>
+      <div className="how-grid">
+        {pasos.map((paso,index) =>(
+          <article className="how-step" key={paso.titulo}>
+            <span className="how-number">{index + 1 }</span>
+            <h3>{paso.titulo}</h3>
+            <p>{paso.texto}</p>
+          </article>
+        ))}
+      </div>
+    </section>
 
-      <section className="cta" aria-labelledby="cta-titulo">
-        <div className="container">
-          <h2 id="cta-titulo">¿Tienes algo roto en casa?</h2>
-          <p>Regístrate gratis y abre tu primer ticket en un par de minutos.</p>
-          <Button to="/registro" variant="secondary">Empezar ahora</Button>
-        </div>
-      </section>
+    <section className="services">
+      <h2>Servicios disponibles</h2>
+      <div className="services-grid">
+        {servicios.map((s) => (
+          <Card key={s.titulo} icon={s.icon} title={s.titulo}>
+            {s.texto}
+          </Card>
+        ))}
+      </div>
+    </section>
+
+    <section className="cta">
+        <h2>Empieza a gestionar tu residencia hoy</h2>
+        <p>Crea tu cuenta y reporta tu primera incidencia en minutos.</p>
+        <Button to="/register" variant="secondary">Crear cuenta</Button>
+    </section>
+
     </>
-  );
+  )
 }

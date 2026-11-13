@@ -1,25 +1,27 @@
 .footer {
-  background: var(--color-suave);
-  border-top: 1px solid var(--color-borde); 
-  padding: 1.5rem 0;
+  padding: 2rem 1.5rem 1rem;
+  background: var(--color-primary-dark);
+  color: white;
 }
 
 .footer-inner {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  max-width: 64rem;
+  margin: 0 auto;
 }
 
-.footer p { 
-    margin: 0; 
+.footer-brand p {
+  margin: 0.5rem 0 0;
+  max-width: 24rem;
 }
 
-.footer nav { 
-    display: flex; 
-    gap: 1rem; 
-}
-
-.footer a { 
-    color: var(--color-texto); 
+.footer-copy {
+  max-width: 64rem;
+  margin: 1.5rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.875rem;
 }

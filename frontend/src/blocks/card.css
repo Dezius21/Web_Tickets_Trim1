@@ -1,25 +1,21 @@
 .card {
-  border: 2px solid #111;
-  border-radius: 4px;
-  padding: 1.25rem;
-  background: #fff;
-  box-shadow: 5px 5px 0px #111;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid var(--color-muted);
+  border-radius: 0.75rem;
+  text-align: center;
 }
 
-.card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 7px 7px 0px #111;
-}
-
-.card-title { 
-  margin-top: 0; 
+.card-icon {
+  display: block;
+  font-size: 2rem;
   margin-bottom: 0.5rem;
-  font-weight: 800;
-  color: #111;
 }
 
-.card p { 
-  margin: 0; 
-  color: #333;
+.card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.card p {
+  margin: 0;
 }

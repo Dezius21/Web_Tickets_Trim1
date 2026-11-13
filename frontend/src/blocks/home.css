@@ -1,70 +1,95 @@
 .hero {
-  background:
-    linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, .6)),
-    url("../assets/home_image.jpg") center / cover no-repeat;
-  color: #fff;
-  padding: 5rem 0;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  background: var(--color-secondary);
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  color: var(--color-primary-dark);
+  margin: 0 0 1rem;
+}
+
+.hero p {
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  font-size: 1.125rem;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.how {
+  padding: 3rem 1.5rem;
+  max-width: 64rem;
+  margin: 0 auto;
   text-align: center;
 }
 
-.hero h1 { 
-    font-size: 2rem; 
-    margin: 0 0 1rem; 
+.how h2 {
+  color: var(--color-primary-dark);
+  margin: 0 0 2rem;
 }
 
-.hero-texto { 
-    max-width: 600px; 
-    margin: 0 auto 1.5rem; 
-    font-size: 1.1rem; 
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.5rem;
 }
 
-.hero-botones { 
-    display: flex; 
-    flex-wrap: wrap; 
-    justify-content: 
-    center; gap: .75rem; 
-}
-
-.seccion { 
-    padding-top: 2.5rem; 
-}
-
-.seccion h2 { 
-    margin-bottom: 1.5rem; 
+.how-step {
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid var(--color-muted);
+  border-radius: 0.75rem;
 }
 
 
-.grid { 
-    display: grid; 
-    gap: 1rem; 
-    grid-template-columns: 1fr; 
+.how-number {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-accent-dark);
+  color: white;
+  font-weight: 600;
 }
 
-@media (min-width: 700px) {
-  .hero h1 { font-size: 2.75rem; }
-  .grid-3 { grid-template-columns: repeat(3, 1fr); }
-  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+.services {
+  padding: 3rem 1.5rem;
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
 }
 
-@media (min-width: 1000px) {
-  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+.services h2 {
+  color: var(--color-primary-dark);
+  margin: 0 0 2rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1.5rem;
 }
 
 .cta {
-  background: var(--color-principal);
-  color: #fff;
-  border-top: 2px solid var(--color-borde);
-  border-bottom: 2px solid var(--color-borde);
+  padding: 3rem 1.5rem;
   text-align: center;
-  padding: 2.5rem 0;
-  margin-top: 3rem;
+  background: var(--color-primary);
+  color: white;
 }
 
-.cta .btn-secondary {
-  background: #fff;
-  color: #111;
+.cta h2 {
+  margin: 0 0 0.5rem;
 }
 
-.cta h2 { 
-    margin-top: 0; 
+.cta p {
+  margin: 0 0 1.5rem;
 }
+

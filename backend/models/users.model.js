@@ -1,5 +1,14 @@
 const mongoose = require('mongoose')
 
+const assignedTicketSchema = new mongoose.Schema(
+    {
+        ticketId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"ticket"
+        }
+    }
+)
+
 const userSchema = new mongoose.Schema(
     {
     username:{
@@ -24,28 +33,18 @@ const userSchema = new mongoose.Schema(
         required: true,
         trim: true,
         enum:["Administrador","Inquilino","Contratista"]
-        
     },
     state:{
         type: Boolean,
         default: true
     },
-    assignedTickets:{
-        type:[assignedTicketSchema]
-    },
-    },
-    {
-        timestamps: true,
-        versionKey: false
-    }
-)
-
-const assignedTicketSchema = new mongoose.Schema(
-    {
-        tickedId:{
+    assignedTickets:[{
             type:mongoose.Schema.Types.ObjectId,
             ref:"ticket"
-        }
+        }]
+    },
+    {
+        timestamps: true
     }
 )
 

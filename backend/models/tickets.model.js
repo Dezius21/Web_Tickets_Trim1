@@ -1,6 +1,40 @@
 const mongoose = require('mongoose')
 
-const
+const ticketReplySchema = new mongoose.Schema(
+    {
+        sender:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+            required: true
+        },
+        message:{
+            type: String,
+            required: true
+        },
+        date:{
+            type: Date,
+            default: Date.now
+        }
+    }
+)
+
+const ticketHistorySchema = new mongoose.Schema(
+    {
+        updatedBy:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user"
+        },
+        lastStatus:{
+            type: mongoose.Schema.Types.String,
+            enum:["Creado","Asignado","En proceso","Finalizado"]
+        },
+        newStatus:{
+            type: mongoose.Schema.Types.String,
+            enum:["Creado","Asignado","En proceso","Finalizado"]
+        }
+
+    }
+)
 
 const ticketSchema = new mongoose.Schema(
     {
@@ -28,19 +62,34 @@ const ticketSchema = new mongoose.Schema(
             default: "Creado"
         },
         createdBy:{
-            type: mongoose.Schema.Types.ObjectId,ref:'User'
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"user"
         },
-        assignedTo:{
-            type: mongoose.Schema.Types.ObjectId,ref:'User'
+        assignedToUser:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"user"
         },
+        assignedToProperty:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"property"
+        },
+        replies:{
+            type:[ticketReplySchema],
+            default:[]
+        },
+        ticketHistory:{
+            type:[ticketHistorySchema],
+            default:[]
+        }
 
     },
     {
-        timestamps: true,
-        versionKey: false
+        timestamps: true
     }
 
 )
+
+
 
 const Ticket = mongoose.model("ticket",ticketSchema);
 

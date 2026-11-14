@@ -1,19 +1,43 @@
 .hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  min-height: 32rem;
   padding: 4rem 1.5rem;
   text-align: center;
-  background: var(--color-secondary);
+  color: white;
+  background: var(--color-primary-dark);
+}
+
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--hero-img) center / cover no-repeat;
+  opacity: 0.3;
+  animation: hero-bg-in 1.5s ease-out both;
+}
+
+.hero-content {
+  max-width: 40rem;
+  animation: hero-text-in 1s ease-out 0.2s both;
 }
 
 .hero h1 {
-  font-size: 2.5rem;
-  color: var(--color-primary-dark);
+  font-size: 2.75rem;
+  color: white;
   margin: 0 0 1rem;
+  text-shadow: 0 2px 12px rgba(42, 27, 61, 0.7);
 }
 
 .hero p {
-  max-width: 40rem;
-  margin: 0 auto 2rem;
+  margin: 0 0 2rem;
   font-size: 1.125rem;
+  text-shadow: 0 2px 12px rgba(42, 27, 61, 0.7);
 }
 
 .hero-actions {
@@ -22,6 +46,89 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
+
+/* Botón principal en naranja: el morado se perdería sobre este fondo */
+.hero .btn-primary {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+.hero .btn-primary:hover {
+  background: white;
+}
+
+@keyframes hero-bg-in {
+  from { opacity: 0; transform: scale(1.06); }
+  to   { opacity: 0.35; transform: scale(1); }
+}
+
+@keyframes hero-text-in {
+  from { opacity: 0; transform: translateY(1rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .hero-content {
+    animation: none;
+  }
+}
+
+.audience {
+  padding: 3rem 1.5rem;
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.audience h2 {
+  color: var(--color-primary-dark);
+  margin: 0 0 2rem;
+}
+
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1.5rem;
+}
+
+.audience-card {
+  overflow: hidden;
+  background: white;
+  border: 2px solid var(--color-text);
+  border-radius: 1rem;
+  box-shadow: 6px 6px 0 var(--color-text);
+  text-align: left;
+}
+
+.audience-card img,
+.audience-placeholder {
+  display: block;
+  width: 100%;
+  height: 12rem;
+}
+
+.audience-card img {
+  object-fit: cover;
+}
+
+.audience-placeholder {
+  background: var(--color-secondary);
+}
+
+.audience-body {
+  padding: 1.5rem;
+}
+
+.audience-body h3 {
+  margin: 0 0 0.5rem;
+  color: var(--color-primary-dark);
+}
+
+.audience-body p {
+  margin: 0;
+}
+
 
 .how {
   padding: 3rem 1.5rem;
@@ -44,8 +151,9 @@
 .how-step {
   padding: 1.5rem;
   background: white;
-  border: 1px solid var(--color-muted);
+  border: 2px solid var(--color-text);
   border-radius: 0.75rem;
+  box-shadow: var(--shadow-hard);
 }
 
 

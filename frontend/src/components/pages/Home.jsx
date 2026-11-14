@@ -1,7 +1,24 @@
 import "../../blocks/home.css";
 import Button from "../Button";
 import Card from "../Card";
+import heroImg from "../../images/banner-hero.webp";
+import residenciaImg from "../../images/interior-de-la-residencia-con-zonas-comunes-y-bastante-luz-natural_20cb0798_251205100442_1280x854.webp";
+import alquilerImg from "../../images/madrid-2-768x512.jpg";
 
+const perfiles =[
+  {
+    titulo: "Residencias estudiantiles",
+    texto: "Los residentes piden servicios y reportan incidencias, y la gestión sigue cada caso hasta cerrarlo.",
+    imagen: residenciaImg,
+    alt: "Zona común de una residencia de estudiantes"
+  },
+  {
+    titulo: "Alquileres",
+    texto: "Inquilinos y propietarios se coordinan en un solo sitio para resolver averías y solicitudes.",
+    imagen: alquilerImg,
+    alt: "Salón de un piso de alquiler"
+  }
+];
 
 const pasos = [
   {
@@ -33,18 +50,44 @@ const servicios = [
 export default function Home(){
   return(
     <>
-    <section className="hero">
-      <h1>Tu residencia o alquiler, sin complicaciones</h1>
-      <p>
-          Pide servicios y reporta incidencias en un solo lugar, para
-          residencias estudiantiles y alquileres.
-      </p>
-      <div className="hero-actions">
-        <Button to="/register">Crear cuenta</Button>
-        <Button to="/login" variant="secondary">Iniciar Sesion</Button>
+    {/*SECTION HERO*/}
+    <section className="hero" style={{ "--hero-img": `url(${heroImg})` }}>
+  <div className="hero-content">
+    <h1>Tu residencia o alquiler, sin complicaciones</h1>
+    <p>
+      Pide servicios y reporta incidencias en un solo lugar, para
+      residencias estudiantiles y alquileres.
+    </p>
+    <div className="hero-actions">
+      <Button to="/register">Crear cuenta</Button>
+      <Button to="/login" variant="secondary">Iniciar sesión</Button>
+    </div>
+  </div>
+</section>
+
+{/*SECTION AUDIENCE*/}
+
+    <section className="audience">
+      <h2>Pensado para cada tipo de alojamiento</h2>
+      <div className="audience-grid">
+        {perfiles.map((p) =>(
+          <article className="audience-card" key={p.titulo}>
+            {p.imagen ? (
+              <img src={p.imagen} alt={p.alt} />
+              ) : (
+              <div className="audience-placeholder" aria-hidden="true" />
+            )}
+            <div className="audience-body">
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </div>
+          </article>
+        )
+        )}
       </div>
     </section>
 
+{/*SECTION HOW*/}
     <section className="how">
 
       <h2>Como funciona</h2>
@@ -59,6 +102,7 @@ export default function Home(){
       </div>
     </section>
 
+{/*SECTION SERVICES*/}
     <section className="services">
       <h2>Servicios disponibles</h2>
       <div className="services-grid">

@@ -1,8 +1,9 @@
 .card {
   padding: 1.5rem;
   background: white;
-  border: 1px solid var(--color-muted);
+  border: 2px solid var(--color-text);
   border-radius: 0.75rem;
+  box-shadow: var(--shadow-hard);
   text-align: center;
 }
 

@@ -46,6 +46,25 @@ const servicios = [
   { icon: "⚙️", titulo: "Otros", texto: "Reporta problemas y recibe soporte." },
 ];
 
+const faqs = [
+  {
+    pregunta: "¿Necesito una cuenta para pedir un servicio?",
+    respuesta: "Sí. Al registrarte, cada solicitud queda asociada a ti y puedes seguir su estado desde tu cuenta.",
+  },
+  {
+    pregunta: "¿Qué tipo de incidencias puedo reportar?",
+    respuesta: "Averías de fontanería, electricidad, mobiliario o internet, y cualquier otro problema de tu alojamiento.",
+  },
+  {
+    pregunta: "¿Puedo ver en qué estado está mi incidencia?",
+    respuesta: "Sí. Cada incidencia muestra su estado, desde que se abre hasta que se resuelve.",
+  },
+  {
+    pregunta: "¿Sirve para residencias y para pisos de alquiler?",
+    respuesta: "Sí, está pensada para ambos: el funcionamiento es el mismo y solo cambia quién gestiona las solicitudes.",
+  },
+];
+
 
 export default function Home(){
   return(
@@ -113,6 +132,20 @@ export default function Home(){
         ))}
       </div>
     </section>
+
+{/*SECTION FAQ*/}
+
+        <section className="faq">
+          <h2>Preguntas frecuentes</h2>
+          <div className="faq-lis">
+            {faqs.map((f) => (
+              <details className="faq-item" key={f.pregunta}>
+                <summary>{f.pregunta}</summary>
+                <p>{f.respuesta}</p>
+              </details>
+            ))}
+          </div>
+        </section>
 
     <section className="cta">
         <h2>Empieza a gestionar tu residencia hoy</h2>

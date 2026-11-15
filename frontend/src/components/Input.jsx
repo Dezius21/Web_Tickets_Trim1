@@ -1,3 +1,5 @@
+import "../blocks/input.css";
+
 export default function Input({ id, label, error, ...props }) {
   const errorId = `${id}-error`;
 

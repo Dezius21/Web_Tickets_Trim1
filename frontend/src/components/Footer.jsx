@@ -14,7 +14,7 @@ export default function Footer(){
       </div>
 
 
-         <p className="footer-copy">© {year} NombreApp. Proyecto académico.</p>
+         <p className="footer-copy">© {year} Nombree.</p>
     </footer>
   )
 }

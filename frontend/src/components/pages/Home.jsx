@@ -46,6 +46,13 @@ const servicios = [
   { icon: "⚙️", titulo: "Otros", texto: "Reporta problemas y recibe soporte." },
 ];
 
+const estados = [
+  { nombre: "Abierta", clase: "abierta", texto: "Registras la incidencia y queda pendiente de atención." },
+  { nombre: "En curso", clase: "en-curso", texto: "El equipo de gestión se ocupa de resolverla." },
+  { nombre: "Resuelta", clase: "resuelta", texto: "Se cierra y puedes revisar cómo se resolvió." },
+];
+
+
 const faqs = [
   {
     pregunta: "¿Necesito una cuenta para pedir un servicio?",
@@ -121,6 +128,19 @@ export default function Home(){
       </div>
     </section>
 
+{/*SECTION STATES*/}
+    <section className="states">
+      <h2>Sigue cada incidencia que se resuelva</h2>
+      <ol className="states-list">
+        {estados.map((e) =>(
+          <li className="state" key={e.nombre}>
+            <span className={`badge badge-${e.clase}`}>{e.nombre}</span>
+            <p>{e.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+    
 {/*SECTION SERVICES*/}
     <section className="services">
       <h2>Servicios disponibles</h2>
@@ -133,9 +153,10 @@ export default function Home(){
       </div>
     </section>
 
+
 {/*SECTION FAQ*/}
 
-        <section className="faq">
+    <section className="faq">
           <h2>Preguntas frecuentes</h2>
           <div className="faq-lis">
             {faqs.map((f) => (
@@ -145,7 +166,7 @@ export default function Home(){
               </details>
             ))}
           </div>
-        </section>
+      </section>
 
     <section className="cta">
         <h2>Empieza a gestionar tu residencia hoy</h2>

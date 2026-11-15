@@ -10,12 +10,15 @@
   --color-muted: #AA95AB;
   --color-error: #C0392B;
   --color-success: #2E8B57;
+  --color-success-dark: #25704A;
   --container: 72rem;
+  --font-title: "Poppins", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-body);
   color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.5;
@@ -26,6 +29,7 @@ body {
 }
 
 h1, h2, h3 {
+  font-family: var(--font-title);
   line-height: 1.2;
 }
 
@@ -34,3 +38,6 @@ h1, h2, h3 {
   outline-offset: 2px;
 }
 
+button, input, textarea, select {
+  font: inherit;
+}

@@ -13,6 +13,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   text-decoration: none;
+  font-family: var(--font-title);
 }
 
 .navbar-links {

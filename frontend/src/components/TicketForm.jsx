@@ -53,8 +53,8 @@ export default function TicketForm({ onSubmit, onCancel }) {
         value={values.body} onChange={handleChange} error={errors.body} />
 
       <div className="ticket-form-actions">
-        <Button type="button" variant="secondary" onClick={onCancel}>Cancelar</Button>
-        <Button type="submit">Crear ticket</Button>
+        <Button type="button" variant="cancel" onClick={onCancel}>Cancelar</Button>
+        <Button type="submit" variant="ok">Crear ticket</Button>
       </div>
     </form>
     </div>

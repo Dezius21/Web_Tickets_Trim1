@@ -22,7 +22,7 @@
 }
 
 .field textarea {
-  resize: vertical;
+  resize: none;
 }
 
 .field input[aria-invalid="true"],

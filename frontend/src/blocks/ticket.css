@@ -1,0 +1,136 @@
+.card.ticket-card {
+  width: 100%;
+  max-width: 44rem; 
+  margin: 100px auto;   
+  flex: none;       
+}
+
+.ticket-form {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  max-width: none;  
+  text-align: left;
+}
+
+.ticket-form h2 {
+  margin: 0;
+  text-align: center;
+}
+
+
+.ticket-form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.ticket-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .75rem;
+}
+
+.ticket-item {
+  width: 100%;
+  display: grid;
+  gap: .15rem;
+  padding: .75rem;
+  text-align: left;
+  font: inherit;
+  font-size: .9rem;
+  color: inherit;
+  background: white;
+  border: 2px solid var(--color-text);
+  border-radius: .5rem;
+  cursor: pointer;
+  transition: transform .1s, box-shadow .1s;
+}
+
+.ticket-item:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--color-text);
+}
+
+.ticket-item[aria-current="true"] {
+  background: var(--color-primary);
+  color: white;
+}
+
+.ticket-item-subject {
+  font-size: 1rem;
+}
+
+.ticket-detail {
+  width: 100%;
+  text-align: left;
+}
+
+.ticket-detail h2 {
+  margin: 0 0 1.25rem;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* Fila de 3 cajitas */
+.ticket-detail-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+}
+
+/* Cada rectángulo individual */
+.ticket-meta-box {
+  background: #f8f7fc; /* Un tono suave que combina con tu barra morada */
+  border: 1.5px solid var(--color-text);
+  border-radius: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ticket-meta-box dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ticket-meta-box dd {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.ticket-detail-description {
+  background: #f8f7fc;
+  border: 1.5px solid var(--color-text);
+  border-radius: 0.5rem;
+  padding: 0.85rem 1rem;
+}
+
+.ticket-detail-description h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.ticket-detail-body {
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket-item { transition: none; }
+}

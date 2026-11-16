@@ -28,9 +28,8 @@ export default function App() {
           <Route path="/403" element={<h1>Acceso denegado</h1>} />
           <Route path="*" element={<h1>Página no encontrada</h1>} />
         </Route>
-        <Route element={<DashboardLayout/>}>
-          <Route path="/demo-cliente" element={<DashboardPreview />} />
-        </Route>
+        
+        <Route path="/demo-cliente" element={<DashboardPreview />} />
           
       </Routes>
     </BrowserRouter>

@@ -39,6 +39,14 @@
   background: var(--color-secondary);
 }
 
+.btn-cancel {
+  background-color: var(--color-error);
+}
+
+.btn-ok {
+  background-color: var(--color-success);
+}
+
 .btn-link {
   padding: 0;
   border: none;

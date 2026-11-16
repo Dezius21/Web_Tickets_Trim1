@@ -5,11 +5,11 @@ import SidePanel from "../DashboardSidePanel";
 export default function DashboardLayout({
   userName,
   onLogout,
-  action,         // botón de la esquina del panel izquierdo (opcional)
-  placeholder,    // texto del centro del panel izquierdo cuando está vacío
-  sidebarTitle,   // título del panel derecho
-  sidebar,        // contenido del panel derecho
-  children,       // contenido del panel izquierdo
+  action,         
+  placeholder,    
+  sidebarTitle,   
+  sidebar,        
+  children,       
 }) {
   return (
     <div className="dashboard">

@@ -1,20 +1,21 @@
 const Ticket = require('../models/tickets.model.js');
 
-// 1. Create a new ticket (Client / Admin)
+// 1. Create a new ticket (Inquilino / Administrador)
 const createTicket = async (req, res) => {
   try {
     const { subject, body, category, priority, assignedToProperty } = req.body;
-    const createdBy = req.user.id; // Extracted from auth middleware
+    const createdBy = req.user.id;
 
-    if (!subject || !body || !category || !priority) {
-      return res.status(400).json({ message: 'Missing required fields: subject, body, category, priority' });
+    // 'priority' is no longer required here because the schema defaults to "Media"
+    if (!subject || !body || !category) {
+      return res.status(400).json({ message: 'Missing required fields: subject, body, category' });
     }
 
     const newTicket = await Ticket.create({
       subject,
       body,
       category,
-      priority,
+      ...(priority && { priority }),
       createdBy,
       assignedToProperty,
       ticketHistory: [
@@ -42,17 +43,16 @@ const createTicket = async (req, res) => {
 const getTickets = async (req, res) => {
   try {
     const { state, priority, category, propertyId } = req.query;
-    const { id: userId, role } = req.user; // Extracted from auth middleware
+    const { id: userId, role } = req.user;
 
     let filter = {};
 
-    // Role-based ownership enforcement
-    if (role === 'cliente') {
+    // Role-based ownership enforcement aligned with users.model.js
+    if (role === 'Inquilino') {
       filter.createdBy = userId;
-    } else if (role === 'agente') {
+    } else if (role === 'Contratista') {
       filter.assignedToUser = userId;
     }
-    // Admin has no ownership restriction and sees all
 
     // Query filters
     if (state) filter.state = state;
@@ -61,8 +61,8 @@ const getTickets = async (req, res) => {
     if (propertyId) filter.assignedToProperty = propertyId;
 
     const tickets = await Ticket.find(filter)
-      .populate('createdBy', 'nombre email')
-      .populate('assignedToUser', 'nombre email')
+      .populate('createdBy', 'username email')
+      .populate('assignedToUser', 'username email')
       .populate('assignedToProperty', 'address type')
       .sort({ createdAt: -1 });
 
@@ -76,19 +76,18 @@ const getTickets = async (req, res) => {
 const getTicketById = async (req, res) => {
   try {
     const ticket = await Ticket.findById(req.params.id)
-      .populate('createdBy', 'nombre email')
-      .populate('assignedToUser', 'nombre email')
+      .populate('createdBy', 'username email')
+      .populate('assignedToUser', 'username email')
       .populate('assignedToProperty', 'address type')
-      .populate('replies.sender', 'nombre rol')
-      .populate('ticketHistory.updatedBy', 'nombre rol');
+      .populate('replies.sender', 'username role')
+      .populate('ticketHistory.updatedBy', 'username role');
 
     if (!ticket) {
       return res.status(404).json({ message: 'Ticket not found' });
     }
 
-    // Security check: Client A cannot view Client B's ticket
     const { id: userId, role } = req.user;
-    if (role === 'cliente' && ticket.createdBy._id.toString() !== userId) {
+    if (role === 'Inquilino' && ticket.createdBy._id.toString() !== userId) {
       return res.status(403).json({ message: 'Access denied: You do not own this ticket' });
     }
 
@@ -98,7 +97,7 @@ const getTicketById = async (req, res) => {
   }
 };
 
-// 4. Assign ticket to an agent (Admin only)
+// 4. Assign ticket to a worker/contractor (Administrador only)
 const assignTicket = async (req, res) => {
   try {
     const { agentId } = req.body;
@@ -116,7 +115,7 @@ const assignTicket = async (req, res) => {
     const previousStatus = ticket.state;
     ticket.assignedToUser = agentId;
     ticket.state = 'Asignado';
-    
+
     ticket.ticketHistory.push({
       updatedBy: adminId,
       lastStatus: previousStatus,
@@ -189,12 +188,11 @@ const addTicketReply = async (req, res) => {
       return res.status(404).json({ message: 'Ticket not found' });
     }
 
-    // Security check: Only ticket creator, assigned agent, or admin can reply
     const { role } = req.user;
     const isCreator = ticket.createdBy.toString() === senderId;
-    const isAssignedAgent = ticket.assignedToUser && ticket.assignedToUser.toString() === senderId;
+    const isAssignedWorker = ticket.assignedToUser && ticket.assignedToUser.toString() === senderId;
 
-    if (role !== 'admin' && !isCreator && !isAssignedAgent) {
+    if (role !== 'Administrador' && !isCreator && !isAssignedWorker) {
       return res.status(403).json({ message: 'Access denied: Not authorized to reply to this ticket' });
     }
 
@@ -214,7 +212,7 @@ const addTicketReply = async (req, res) => {
   }
 };
 
-// 7. Delete ticket (Admin only)
+// 7. Delete ticket (Administrador only)
 const deleteTicket = async (req, res) => {
   try {
     const deletedTicket = await Ticket.findByIdAndDelete(req.params.id);
@@ -227,6 +225,55 @@ const deleteTicket = async (req, res) => {
   }
 };
 
+// 8. METRICS FOR WORKER ROLE ('Contratista')
+const getWorkerTicketMetrics = async (req, res) => {
+  try {
+    const workerId = req.user.id;
+
+    const [pendientes, totalesAsignados, urgentes, completados] = await Promise.all([
+      Ticket.countDocuments({ assignedToUser: workerId, state: { $ne: 'Finalizado' } }),
+      Ticket.countDocuments({ assignedToUser: workerId }),
+      Ticket.countDocuments({ assignedToUser: workerId, priority: 'Alta', state: { $ne: 'Finalizado' } }),
+      Ticket.countDocuments({ assignedToUser: workerId, state: 'Finalizado' })
+    ]);
+
+    return res.status(200).json({
+      pendientes,
+      totalesAsignados,
+      urgentes,
+      completados
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error calculating worker ticket metrics', error: error.message });
+  }
+};
+
+// 9. METRICS FOR ADMIN ROLE ('Administrador')
+const getAdminTicketMetrics = async (req, res) => {
+  try {
+    const [
+      totalesAsignados,
+      totalesPorAsignar,
+      urgentesSinAsignar,
+      urgentesAsignados
+    ] = await Promise.all([
+      Ticket.countDocuments({ assignedToUser: { $ne: null } }),
+      Ticket.countDocuments({ assignedToUser: null }),
+      Ticket.countDocuments({ priority: 'Alta', assignedToUser: null, state: { $ne: 'Finalizado' } }),
+      Ticket.countDocuments({ priority: 'Alta', assignedToUser: { $ne: null }, state: { $ne: 'Finalizado' } })
+    ]);
+
+    return res.status(200).json({
+      totalesAsignados,
+      totalesPorAsignar,
+      urgentesSinAsignar,
+      urgentesAsignados
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error calculating admin ticket metrics', error: error.message });
+  }
+};
+
 module.exports = {
   createTicket,
   getTickets,
@@ -234,23 +281,7 @@ module.exports = {
   assignTicket,
   updateTicketStatus,
   addTicketReply,
-  deleteTicket
+  deleteTicket,
+  getWorkerTicketMetrics,
+  getAdminTicketMetrics
 };
-
-/*
- * TODO - Middlewares de Autenticación y Autorización (auth.middleware.js):
- *
- * 1. verifyToken (Autenticación):
- *    - Leer y verificar el JWT de los headers (Authorization: Bearer <token>).
- *    - Inyectar el payload decodificado en `req.user` (ej. `{ id, role }`) para usarlo en los controladores.
- *    - Responder 401 (Unauthorized) si no hay token o es inválido/expirado.
- *
- * 2. authorizeRoles(...allowedRoles) (Autorización por Rol):
- *    - Comprobar que `req.user.role` esté incluido en los roles permitidos ('cliente', 'agente', 'admin').
- *    - Responder 403 (Forbidden) si el rol no tiene permisos (ej. Cliente intentando entrar a rutas de Admin).
- *
- * 3. checkTicketOwnership (Propiedad del Recurso - Crítico para defensa):
- *    - Validar que si `req.user.role === 'cliente'`, el `createdBy` del ticket coincida con `req.user.id`.
- *    - Si es 'agente', validar que coincida con `assignedToUser` (para modificaciones/respuestas).
- *    - Si es 'admin', permitir el paso directo (`next()`). Devolver 403 si no cumple.
- */

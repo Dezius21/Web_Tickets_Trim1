@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "../Button";
-import DashboardLayout from "../layouts/DashboardLayout";
+import ClientDashboardLayout from "../layouts/ClientDashboardLayout";
 import TicketForm from "../TicketForm";
 import TicketHistory from "../TicketHistory";
 import TicketDetail from "../TicketDetail";
 
-export default function DashboardPreview() {
+export default function ClientDashboardPreview() {
   const [tickets, setTickets] = useState([]);
   const [creando, setCreando] = useState(false);
   const [seleccionadoId, setSeleccionadoId] = useState(null);
@@ -34,9 +34,8 @@ export default function DashboardPreview() {
   }
 
   return (
-    <DashboardLayout
+    <ClientDashboardLayout
       userName="Carlos Deza"
-      onLogout={() => alert("Aquí se cerrará la sesión")}
       action={
         <Button onClick={abrirFormulario} disabled={creando}>
           + Nuevo ticket
@@ -57,6 +56,6 @@ export default function DashboardPreview() {
       ) : (
         ticketSeleccionado && <TicketDetail ticket={ticketSeleccionado} />
       )}
-    </DashboardLayout>
+    </ClientDashboardLayout>
   );
 }

@@ -1,4 +1,4 @@
-export default function SidePanel({ title, children }) {
+export default function ClientSidePanel({ title, children }) {
   return (
     <aside className="panel panel-side" aria-labelledby="side-title">
       <h2 id="side-title">{title}</h2>

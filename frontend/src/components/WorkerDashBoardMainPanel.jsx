@@ -1,6 +1,6 @@
 import { Children } from "react";
 
-export default function MainPanel({ action, placeholder, children }) {
+export default function WorkerMainPanel({ action, placeholder, children }) {
   const hayContenido = Children.toArray(children).length > 0;
 
   return (

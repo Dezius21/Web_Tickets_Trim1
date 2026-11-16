@@ -5,8 +5,9 @@ import Login from "./components/pages/Login";
 import Register  from "./components/pages/Register";
 import RutaProtegida from "./components/ProtectedRoute";
 
-import DashboardPreview from "./components/pages/DashboardPreview";
-import DashboardLayout from "./components/layouts/DashboardLayout";
+import ClientDashboardPreview from "./components/pages/ClientDashboardPreview";
+import ClientDashboardLayout from "./components/layouts/ClientDashboardLayout";
+import WorkerDashboardPreview from "./components/pages/WorkerDashboardPreview";
 
 export default function App() {
   return (
@@ -29,7 +30,8 @@ export default function App() {
           <Route path="*" element={<h1>Página no encontrada</h1>} />
         </Route>
         
-        <Route path="/demo-cliente" element={<DashboardPreview />} />
+        <Route path="/demo-cliente" element={<ClientDashboardPreview />} />
+        <Route path="/demo-trabajador" element={<WorkerDashboardPreview />} />
           
       </Routes>
     </BrowserRouter>

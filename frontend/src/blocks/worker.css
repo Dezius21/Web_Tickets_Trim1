@@ -1,0 +1,118 @@
+.panel-side-kpis {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-list {
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.kpi-list > li {
+  display: flex;
+}
+
+.kpi {
+  flex: 1;
+  min-height: 7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .25rem;
+  padding: 1rem;
+  text-align: center;
+  font: inherit;
+  color: var(--color-text);
+  border: 2px solid var(--color-text);
+  border-radius: .5rem;
+  box-shadow: 4px 4px 0 var(--color-text);
+  cursor: pointer;
+  transition: transform .1s, box-shadow .1s;
+  margin: 1rem; 
+}
+
+.kpi:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-text);
+}
+
+/* Un color de fondo por KPI */
+.kpi-total  {
+    background: var(--color-primary); 
+}
+
+.kpi-pendientes  { 
+    background: var(--color-accent); 
+}
+
+.kpi-urgentes    { 
+    background: var(--color-error); 
+}
+
+.kpi-completados { 
+    background: var(--color-success); 
+}
+
+.kpi[aria-pressed="true"] {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--color-text), inset 0 0 0 4px var(--color-text);
+}
+
+.kpi-count {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.kpi-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.worker-list {
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.worker-list h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.ticket-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .75rem;
+}
+
+.ticket-row {
+  display: grid;
+  gap: .2rem;
+  padding: .85rem 1rem;
+  background: white;
+  border: 2px solid var(--color-text);
+  border-radius: .5rem;
+}
+
+.ticket-row-subject {
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.ticket-row-meta {
+  font-size: .9rem;
+  opacity: .8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kpi { transition: none; }
+}

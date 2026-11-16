@@ -1,6 +1,6 @@
 import Button from "./Button";
 
-export default function DashboardHeader({ userName, onLogout }) {
+export default function ClientDashboardHeader({ userName, onLogout }) {
   return (
     <header className="dashboard-header">
       <span className="dashboard-logo">Nombreee</span>

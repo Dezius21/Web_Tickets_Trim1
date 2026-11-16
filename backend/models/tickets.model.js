@@ -53,7 +53,7 @@ const ticketSchema = new mongoose.Schema(
         },
         priority:{
             type: String,
-            required: true,
+            default: "Media",
             enum:["Baja","Media","Alta"]
         },
         state:{

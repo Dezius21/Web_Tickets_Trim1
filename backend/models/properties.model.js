@@ -40,7 +40,7 @@ const propertySchema = new mongoose.Schema(
         ownedby:{
             type: mongoose.Schema.Types.ObjectId,
             ref:"user",
-            required = true
+            required: true
         },
         tenants:{
             type:[tenantSchema],

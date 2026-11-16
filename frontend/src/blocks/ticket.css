@@ -7,9 +7,10 @@
 
 .ticket-form {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   width: 100%;
-  max-width: none;  
+  max-width: none;
   text-align: left;
 }
 

@@ -1,0 +1,76 @@
+.ticket-modal {
+  width: min(44rem, calc(100% - 2rem));
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+  color: var(--color-text);
+  background: #fff;
+  border: 2px solid var(--color-text);
+  border-radius: 0.75rem;
+  box-shadow: 6px 6px 0 var(--color-text);
+}
+
+.ticket-modal::backdrop {
+  background: rgba(42, 27, 61, 0.55);
+}
+
+.ticket-modal-content {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.ticket-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ticket-modal-header h2 {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.ticket-modal-close {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  background: #fff;
+  border: 2px solid var(--color-text);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.ticket-modal-close:hover {
+  background: var(--color-secondary);
+}
+
+.ticket-modal .ticket-detail-meta {
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0;
+}
+
+.ticket-modal .ticket-responses {
+  margin-top: 0;
+}
+
+.ticket-modal-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ticket-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .ticket-modal-content { padding: 1.1rem; }
+  .ticket-modal .ticket-detail-meta,
+  .ticket-modal-fields { grid-template-columns: 1fr; }
+}

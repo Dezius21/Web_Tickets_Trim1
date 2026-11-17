@@ -1,20 +1,53 @@
-import { useState } from "react";
+  import { useState } from "react";
 import WorkerDashboardLayout from "../layouts/WorkerDashboardLayout";
 import WorkerKpis from "../WorkerKpis";
 import WorkerTicketList from "../WorkerTicketList";
+import TicketModal from "../TicketModal";
 import { KPIS } from "../../utils/ticketKpis";
 import { TICKETS_EJEMPLO } from "../../utils/mockTickets";
 
+const NOMBRE_TRABAJADOR = "Cameron Winter"; // temporal: luego vendrá del AuthContext
+
 export default function WorkerDashboardPreview() {
-  const tickets = TICKETS_EJEMPLO; // temporal: luego vendrán de la API
+  const [tickets, setTickets] = useState(TICKETS_EJEMPLO); // temporal: luego vendrán de la API
   const [kpiId, setKpiId] = useState(null);
+  const [seleccionadoId, setSeleccionadoId] = useState(null);
 
   const kpiActivo = KPIS.find((k) => k.id === kpiId);
   const ticketsFiltrados = kpiActivo ? tickets.filter(kpiActivo.filter) : [];
+  const ticketSeleccionado = tickets.find((t) => t.id === seleccionadoId);
+
+  function guardarTicket(id, { priority, state, response }) {
+    // temporal: luego será un PATCH a la API
+    setTickets((prev) =>
+      prev.map((t) => {
+        if (t.id !== id) return t;
+
+        const responses = t.responses ?? [];
+        return {
+          ...t,
+          priority,
+          state,
+          responses: response
+            ? [
+                ...responses,
+                {
+                  id: crypto.randomUUID(),
+                  author: NOMBRE_TRABAJADOR,
+                  text: response,
+                  createdAt: new Date().toISOString(),
+                },
+              ]
+            : responses,
+        };
+      })
+    );
+    setSeleccionadoId(null);
+  }
 
   return (
     <WorkerDashboardLayout
-      userName="Cameron Winter"
+      userName={NOMBRE_TRABAJADOR}
       placeholder="Selecciona un indicador para ver sus tickets"
       sidebarTitle="Resumen"
       sidebar={
@@ -22,7 +55,20 @@ export default function WorkerDashboardPreview() {
       }
     >
       {kpiActivo && (
-        <WorkerTicketList title={kpiActivo.label} tickets={ticketsFiltrados} />
+        <WorkerTicketList
+          title={kpiActivo.label}
+          tickets={ticketsFiltrados}
+          onSelect={setSeleccionadoId}
+        />
+      )}
+
+      {ticketSeleccionado && (
+        <TicketModal
+          key={ticketSeleccionado.id}
+          ticket={ticketSeleccionado}
+          onSave={guardarTicket}
+          onClose={() => setSeleccionadoId(null)}
+        />
       )}
     </WorkerDashboardLayout>
   );

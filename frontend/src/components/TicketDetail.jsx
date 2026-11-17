@@ -1,3 +1,5 @@
+import TicketResponses from "./TicketResponses";
+
 export default function TicketDetail({ ticket }) {
   return (
     <div className="card ticket-card">

@@ -5,7 +5,6 @@ export default function WorkerMainPanel({ action, placeholder, children }) {
 
   return (
     <section className="panel panel-main">
-      {action && <div className="panel-toolbar">{action}</div>}
 
       {hayContenido
         ? children

@@ -12,7 +12,7 @@ export default function WorkerDashboardLayout({
   children,       
 }) {
   return (
-    <div className="dashboard">
+    <div className="dashboard dashboard-worker">
       <a href="#contenido" className="skip">Saltar al contenido</a>
 
       <WorkerDashboardHeader userName={userName} onLogout={onLogout} />

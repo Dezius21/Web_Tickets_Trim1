@@ -37,7 +37,7 @@ export default function TicketModal({ ticket, onSave, onClose }) {
         if (pulsadoEnFondo.current && e.target === e.currentTarget) onClose();
       }}
     >
-      <form className="ticket-modal-content" onSubmit={handleSubmit}>s
+      <form className="ticket-modal-content" onSubmit={handleSubmit}>
         <header className="ticket-modal-header">
           <h2 id="ticket-modal-title">{ticket.subject}</h2>
           <button

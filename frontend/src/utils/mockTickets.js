@@ -4,5 +4,5 @@ export const TICKETS_EJEMPLO = [
   { id: "4", subject: "Cambiar bombilla del pasillo", body: "Necesita escalera.", category: "Electricidad", priority: "Baja", state: "Finalizado", createdAt: "2026-11-05T08:45:00.000Z" },
   { id: "6", subject: "Persiana del dormitorio atascada", body: "No sube ni baja.", category: "Reparacion", priority: "Media", state: "Finalizado", createdAt: "2026-11-02T10:05:00.000Z" },
   { id: "7", subject: "Olor a gas en la cocina", body: "Se nota sobre todo por la noche.", category: "Otros", priority: "Alta", state: "Finalizado", createdAt: "2026-11-01T20:40:00.000Z" },
-  { id: "8", subject: "Revisar el cuadro eléctrico", body: "Salta el diferencial a veces.", category: "Electricidad", priority: "Media", state: "Asignado", createdAt: "2026-11-10T13:15:00.000Z" },
+  { id: "8", subject: "Revisar el cuadro eléctrico", body: "Salta el diferencial a veces.", category: "Electricidad", priority: "Media", state: "Asignado", createdAt: "2026-11-10T13:15:00.000Z",  }
 ];

@@ -8,6 +8,7 @@ import RutaProtegida from "./components/ProtectedRoute";
 import ClientDashboardPreview from "./components/pages/ClientDashboardPreview";
 import ClientDashboardLayout from "./components/layouts/ClientDashboardLayout";
 import WorkerDashboardPreview from "./components/pages/WorkerDashboardPreview";
+import AdminDashboardPreview from "./components/pages/AdminDashboardPreview";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
         
         <Route path="/demo-cliente" element={<ClientDashboardPreview />} />
         <Route path="/demo-trabajador" element={<WorkerDashboardPreview />} />
+        <Route path="/demo-admin" element={<AdminDashboardPreview />} />
           
       </Routes>
     </BrowserRouter>

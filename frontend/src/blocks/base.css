@@ -1,0 +1,43 @@
+:root {
+  /* Colores */
+  --color-text: #2A1B3D;
+  --color-bg: #FAF3E8;
+  --color-primary: #7E52A0;
+  --color-primary-dark: #5E3A7D;
+  --color-secondary: #E6DCEF;
+  --color-accent: #F0A04B;
+  --color-accent-dark: #B45309;
+  --color-muted: #AA95AB;
+  --color-error: #C0392B;
+  --color-success: #2E8B57;
+  --color-success-dark: #25704A;
+  --container: 72rem;
+  --font-title: "Poppins", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-title);
+  line-height: 1.2;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}

@@ -1,0 +1,22 @@
+.card {
+  padding: 1.5rem;
+  background: white;
+  border: 2px solid var(--color-text);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-hard);
+  text-align: center;
+}
+
+.card-icon {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.card p {
+  margin: 0;
+}

@@ -1,8 +1,7 @@
-const bcrypt = require('bcryptjs'); // O 'bcrypt', según la librería instalada
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users.model.js');
 
-// 1. PUBLIC REGISTER: Always creates an 'Inquilino' (Client) account
 const registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -19,7 +18,6 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
 
-    // Force role to 'Inquilino' per security rules
     const newUser = await User.create({
       username,
       email,
@@ -44,7 +42,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// 2. LOGIN: Verifies credentials and issues JWT
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -53,7 +50,6 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Email and password are required' });
     }
 
-    // Explicitly select password_hash since it has 'select: false' in the model
     const user = await User.findOne({ email }).select('+password_hash');
 
     if (!user || !user.state) {
@@ -86,7 +82,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-// 3. GET ALL USERS (Admin only - supports filtering by role or state)
 const getUsers = async (req, res) => {
   try {
     const { role, state } = req.query;
@@ -102,7 +97,6 @@ const getUsers = async (req, res) => {
   }
 };
 
-// 4. GET USER BY ID (Profile / Admin)
 const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate('assignedTickets', 'subject state priority');
@@ -115,7 +109,6 @@ const getUserById = async (req, res) => {
   }
 };
 
-// 5. UPDATE USER PROFILE (User edits own basic data)
 const updateUserProfile = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -150,7 +143,6 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-// 6. UPDATE USER ROLE OR STATUS (Admin only - Role management & Soft Delete)
 const updateUserRoleOrStatus = async (req, res) => {
   try {
     const { role, state } = req.body;
@@ -189,20 +181,3 @@ module.exports = {
   updateUserProfile,
   updateUserRoleOrStatus
 };
-
-/*
- * TODO - Middlewares de Autenticación y Usuarios (auth.middleware.js):
- *
- * 1. verifyToken (Autenticación):
- *    - Extraer y verificar el JWT de la cabecera `Authorization: Bearer <token>`.
- *    - Comprobar en BD que el usuario existe y mantiene `state: true` (activo)[cite: 8].
- *    - Inyectar `{ id, role }` en `req.user` para los controladores[cite: 8]. Devolver 401 si falla.
- *
- * 2. isAdmin (Autorización para gestión de usuarios):
- *    - Verificar que `req.user.role === 'Administrador'`[cite: 8].
- *    - Obligatorio para listar todos los usuarios, cambiar roles o desactivar cuentas (`state`)[cite: 2, 8]. Devolver 403 si no cumple.
- *
- * 3. checkUserOwnership (Propiedad del perfil):
- *    - Validar que el usuario solo pueda consultar o editar su propio perfil (`req.params.id === req.user.id`),
- *      permitiendo el paso directo si `req.user.role === 'Administrador'`[cite: 2, 8]. Devolver 403 si no coincide.
- */

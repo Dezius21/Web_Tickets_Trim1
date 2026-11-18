@@ -1,12 +1,10 @@
 const Ticket = require('../models/tickets.model.js');
 
-// 1. Create a new ticket (Inquilino / Administrador)
 const createTicket = async (req, res) => {
   try {
     const { subject, body, category, priority, assignedToProperty } = req.body;
     const createdBy = req.user.id;
 
-    // 'priority' is no longer required here because the schema defaults to "Media"
     if (!subject || !body || !category) {
       return res.status(400).json({ message: 'Missing required fields: subject, body, category' });
     }
@@ -39,7 +37,6 @@ const createTicket = async (req, res) => {
   }
 };
 
-// 2. Get all tickets with role-based access and query filters
 const getTickets = async (req, res) => {
   try {
     const { state, priority, category, propertyId } = req.query;
@@ -47,14 +44,12 @@ const getTickets = async (req, res) => {
 
     let filter = {};
 
-    // Role-based ownership enforcement aligned with users.model.js
     if (role === 'Inquilino') {
       filter.createdBy = userId;
     } else if (role === 'Contratista') {
       filter.assignedToUser = userId;
     }
 
-    // Query filters
     if (state) filter.state = state;
     if (priority) filter.priority = priority;
     if (category) filter.category = category;
@@ -72,7 +67,6 @@ const getTickets = async (req, res) => {
   }
 };
 
-// 3. Get single ticket by ID with ownership check
 const getTicketById = async (req, res) => {
   try {
     const ticket = await Ticket.findById(req.params.id)
@@ -97,7 +91,6 @@ const getTicketById = async (req, res) => {
   }
 };
 
-// 4. Assign ticket to a worker/contractor (Administrador only)
 const assignTicket = async (req, res) => {
   try {
     const { agentId } = req.body;
@@ -133,7 +126,6 @@ const assignTicket = async (req, res) => {
   }
 };
 
-// 5. Update ticket status or priority and log history
 const updateTicketStatus = async (req, res) => {
   try {
     const { state, priority } = req.body;
@@ -173,7 +165,6 @@ const updateTicketStatus = async (req, res) => {
   }
 };
 
-// 6. Add a reply message to the ticket thread
 const addTicketReply = async (req, res) => {
   try {
     const { message } = req.body;
@@ -212,7 +203,6 @@ const addTicketReply = async (req, res) => {
   }
 };
 
-// 7. Delete ticket (Administrador only)
 const deleteTicket = async (req, res) => {
   try {
     const deletedTicket = await Ticket.findByIdAndDelete(req.params.id);
@@ -225,7 +215,6 @@ const deleteTicket = async (req, res) => {
   }
 };
 
-// 8. METRICS FOR WORKER ROLE ('Contratista')
 const getWorkerTicketMetrics = async (req, res) => {
   try {
     const workerId = req.user.id;
@@ -248,7 +237,6 @@ const getWorkerTicketMetrics = async (req, res) => {
   }
 };
 
-// 9. METRICS FOR ADMIN ROLE ('Administrador')
 const getAdminTicketMetrics = async (req, res) => {
   try {
     const [

@@ -1,9 +1,10 @@
 import { KPIS } from "../utils/ticketKpis";
 
-export default function WorkerKpis({ tickets, selectedId, onSelect }) {
+// kpis: por defecto los del trabajador; el admin le pasa los suyos
+export default function WorkerKpis({ kpis = KPIS, tickets, selectedId, onSelect }) {
   return (
     <ul className="kpi-list">
-      {KPIS.map((kpi) => (
+      {kpis.map((kpi) => (
         <li key={kpi.id}>
           <button
             type="button"

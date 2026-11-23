@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const { registerUser, loginUser } = require("./controllers/users.controller.js");
 const { verifyToken, isAdmin, checkUserOwnership } = require("./middlewares/auth.middleware");
+const { validateRegister, validateLogin } = require("./middlewares/validate.middleware");
 
 
 const app = express();
@@ -14,8 +15,9 @@ app.use(express.json());
 app.get("/api/test-auth", verifyToken, (req, res) => {
   res.json({ user: req.user }); //HAY QUE BORRAR 
 });
-app.post("/api/test/register", registerUser);
-app.post("/api/test/login", loginUser);
+
+app.post("/api/test/register", validateRegister, registerUser);
+app.post("/api/test/login", validateLogin, loginUser);
 
 app.get("/api/test-admin", verifyToken, isAdmin, (req, res) => res.json({ ok: true }));
 app.get("/api/test-owner/:id", verifyToken, checkUserOwnership, (req, res) => res.json({ ok: true }));

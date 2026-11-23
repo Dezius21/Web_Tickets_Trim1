@@ -1,5 +1,6 @@
 import { use, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+const API_URL = "http://localhost:3000/api";
 import Input from "../Input";
 import Button from "../Button";
 import "../../blocks/auth.css";
@@ -28,28 +29,58 @@ function validate(form){
 
 export default function Login(){
 
-  const [form, setForm] = useState({email: "", password: ""});
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function handleChange(e){
     const {name, value} = e.target;
     setForm({...form, [name]: value});
     setErrors({...errors, [name]: ""});
-    setMessage("");
+    setServerError("");
   }
 
-  function handleSubmit(e){
+  async function handleSubmit(e){
     e.preventDefault();
     
     const newErrors = validate(form);
     setErrors(newErrors);
     if(Object.keys(newErrors).length > 0) return;
 
-    console.log("login valido", form.email);
+    setLoading(true);
+    setServerError("")
 
-    setMessage("Todo ok falta conexion al server");
+    try {
+    const res = await fetch(`${API_URL}/test/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: form.email, password: form.password }),
+    });
+    const data = await res.json();
+
+    if(!res.ok)
+    {
+      setServerError(
+        res.status === 401
+        ? "Email o contraseña incorrectos."
+        :data.message || "No se pudo iniciar sesion"
+      );
+
+      return;
+    }
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    navigate("/")
+    } catch (error){
+      setServerError("No se pudo conectar con el servidor.");
+    } finally{
+        setLoading(false);
+    }
   }
+  
 
   return(
     <section className="auth">
@@ -80,11 +111,17 @@ export default function Login(){
             onChange={handleChange}
             error={errors.password}
           />
-          <Button type="submit">Entrar</Button>
-        </form>
-        {message && (
-          <p className="auth-message" role="status">{message}</p>
+        {serverError && (
+          <p className="field-error" role="alert">{serverError}</p>
         )}
+        <Button type="submit" disabled={loading}>
+          {loading ? "Entrando..." : "Entrar"}
+        </Button>
+
+
+        </form>
+
+
 
         <p className="auth-switch">
           ¿No tienes cuenta? <Link to="/register">Crea una cuenta</Link>

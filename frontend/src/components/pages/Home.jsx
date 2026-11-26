@@ -4,6 +4,10 @@ import Card from "../Card";
 import heroImg from "../../images/banner-hero.webp";
 import residenciaImg from "../../images/interior-de-la-residencia-con-zonas-comunes-y-bastante-luz-natural_20cb0798_251205100442_1280x854.webp";
 import alquilerImg from "../../images/madrid-2-768x512.jpg";
+import limpiezaIcon from "../../assets/iconosIndex/broom1.svg";
+import mantenimientoIcon from "../../assets/iconosIndex/wrench.svg";
+import lavanderiaIcon from "../../assets/iconosIndex/laundry.svg";
+import otrosIcon from "../../assets/iconosIndex/gear icon.svg";
 
 const perfiles =[
   {
@@ -40,10 +44,10 @@ const pasos = [
 ];
 
 const servicios = [
-  { icon: "🧹", titulo: "Limpieza", texto: "Solicita la limpieza de tu habitación o zonas comunes." },
-  { icon: "🔧", titulo: "Mantenimiento", texto: "Avisa de averías de fontanería, electricidad o mobiliario." },
-  { icon: "🧺", titulo: "Lavandería", texto: "Reserva turno y consulta el estado de tu servicio." },
-  { icon: "⚙️", titulo: "Otros", texto: "Reporta problemas y recibe soporte." },
+  { image: limpiezaIcon, titulo: "Limpieza", texto: "Solicita la limpieza de tu habitación o zonas comunes." },
+  { image: mantenimientoIcon, titulo: "Mantenimiento", texto: "Avisa de averías de fontanería, electricidad o mobiliario." },
+  { image: lavanderiaIcon, titulo: "Lavandería", texto: "Reserva turno y consulta el estado de tu servicio." },
+  { image: otrosIcon, titulo: "Otros", texto: "Reporta problemas y recibe soporte." },
 ];
 
 const estados = [
@@ -146,9 +150,9 @@ export default function Home(){
       <h2>Servicios disponibles</h2>
       <div className="services-grid">
         {servicios.map((s) => (
-          <Card key={s.titulo} icon={s.icon} title={s.titulo}>
-            {s.texto}
-          </Card>
+          <Card key={s.titulo} image={s.image} title={s.titulo}>
+  {s.texto}
+</Card>
         ))}
       </div>
     </section>
@@ -158,7 +162,7 @@ export default function Home(){
 
     <section className="faq">
           <h2>Preguntas frecuentes</h2>
-          <div className="faq-lis">
+          <div className="faq-list">
             {faqs.map((f) => (
               <details className="faq-item" key={f.pregunta}>
                 <summary>{f.pregunta}</summary>

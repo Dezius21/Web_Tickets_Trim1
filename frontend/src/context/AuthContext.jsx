@@ -10,7 +10,7 @@ const AuthContext = createContext(null);
 // Al abrir la web (o recargar con F5) recuperamos la sesión guardada
 function leerSesion() {
   try {
-    const token = localsorage.getItem("token");
+    const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
     return token && user ? user : null;
   } catch {

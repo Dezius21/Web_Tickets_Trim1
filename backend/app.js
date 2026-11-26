@@ -8,7 +8,7 @@ const { verifyToken, isAdmin, checkUserOwnership } = require("./middlewares/auth
 const { validateRegister, validateLogin } = require("./middlewares/validate.middleware");
 const ticketsRouter = require("./routes/ticket.routes.js")
 const propertiesRouter = require("./routes/property.routes.js")
-//const usersRouter = require("./routes/user.routes.js")
+const usersRouter = require("./routes/user.routes.js")
 
 const app = express();
 

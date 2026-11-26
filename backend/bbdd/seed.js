@@ -2,6 +2,7 @@
 // WARNING: this DELETES all users, properties and tickets in that database first.
 // CLI:  node bbdd/seed.js --force
 require('dotenv').config();
+require('node:dns').setServers(['8.8.8.8', '1.1.1.1']);
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 

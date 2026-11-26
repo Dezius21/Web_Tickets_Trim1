@@ -3,6 +3,7 @@
 // Needs in .env:  MONGO_URI, ADMIN_USERNAME, ADMIN_EMAIL, ADMIN_PASSWORD
 // Run:  node bbdd/createAdmin.js
 require('dotenv').config();
+require('node:dns').setServers(['8.8.8.8', '1.1.1.1']);
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('../models/users.model');

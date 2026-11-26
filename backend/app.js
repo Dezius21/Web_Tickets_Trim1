@@ -1,4 +1,5 @@
 require("dotenv").config();
+require("node:dns").setServers(["8.8.8.8", "1.1.1.1"]);
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -13,6 +14,8 @@ const app = express();
 
 app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
+app.use("/api/tickets", ticketsRouter);
+app.use("/api/properties", propertiesRouter);
 
 app.get("/api/test-auth", verifyToken, (req, res) => {
   res.json({ user: req.user }); //HAY QUE BORRAR 

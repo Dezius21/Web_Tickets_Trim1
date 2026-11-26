@@ -1,3 +1,4 @@
+const mongoose = require("mongoose")
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 
 const isText = (value) => typeof value === "string";
@@ -46,4 +47,11 @@ const validateLogin = (req, res, next) => {
   next();
 };
 
-module.exports = { validateRegister, validateLogin };
+const validateObjectId = (req, res, next) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).json({ message: "ID no válido." });
+  }
+  next();
+};
+
+module.exports = { validateRegister, validateLogin, validateObjectId};

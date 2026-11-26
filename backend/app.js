@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 const { registerUser, loginUser } = require("./controllers/users.controller.js");
 const { verifyToken, isAdmin, checkUserOwnership } = require("./middlewares/auth.middleware");
 const { validateRegister, validateLogin } = require("./middlewares/validate.middleware");
-
+const ticketsRouter = require("./routes/ticket.routes.js")
+const propertiesRouter = require("./routes/property.routes.js")
+//const usersRouter = require("./routes/user.routes.js")
 
 const app = express();
 

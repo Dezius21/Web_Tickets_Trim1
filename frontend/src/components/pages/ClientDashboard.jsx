@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import ClientDashboardLayout from "../layouts/ClientDashboardLayout";
 import TicketForm from "../TicketForm";
@@ -11,6 +11,15 @@ import { api } from "../../utils/api";
 const conId = (t) => ({ ...t, id: t._id });
 const mensaje = (err, texto) => (err.status === 0 ? err.message : texto);
 
+// El back guarda replies { sender, message, date }; TicketResponses espera responses { author, text, createdAt }
+const aRespuestas = (replies = []) =>
+  replies.map((r) => ({
+    id: r._id,
+    author: r.sender?.username ?? "Usuario",
+    text: r.message,
+    createdAt: r.date,
+  }));
+
 export default function ClientDashboardPreview() {
   const { user, logout } = useAuth();
   const [tickets, setTickets] = useState([]);
@@ -18,6 +27,9 @@ export default function ClientDashboardPreview() {
   const [error, setError] = useState("");
   const [creando, setCreando] = useState(false);
   const [seleccionadoId, setSeleccionadoId] = useState(null);
+  const [cargandoRespuestas, setCargandoRespuestas] = useState(false);
+  const [errorRespuestas, setErrorRespuestas] = useState("");
+  const peticionRef = useRef(0); // si pulsas otro ticket antes de que llegue la respuesta, se ignora la antigua
 
   const ticketSeleccionado = tickets.find((t) => t.id === seleccionadoId);
 
@@ -46,9 +58,30 @@ export default function ClientDashboardPreview() {
     setCreando(true);
   }
 
-  function seleccionarTicket(id) {
+  // El listado trae las respuestas sin el nombre de quien las escribió; el detalle sí.
+  // Por eso al abrir un ticket se pide su detalle (y así siempre se ven las respuestas más recientes).
+  async function seleccionarTicket(id) {
+    const peticion = ++peticionRef.current;
     setCreando(false);
+    setError("");
+    setErrorRespuestas("");
     setSeleccionadoId(id);
+    setCargandoRespuestas(true);
+
+    try {
+      const detalle = await api(`/tickets/${id}`);
+      if (peticion !== peticionRef.current) return;
+      setTickets((prev) =>
+        prev.map((t) =>
+          t.id === id ? { ...t, responses: aRespuestas(detalle.replies) } : t
+        )
+      );
+    } catch (err) {
+      if (peticion !== peticionRef.current) return;
+      setErrorRespuestas(mensaje(err, "No se pudieron cargar las respuestas."));
+    } finally {
+      if (peticion === peticionRef.current) setCargandoRespuestas(false);
+    }
   }
 
   async function crearTicket(datos) {
@@ -91,7 +124,14 @@ export default function ClientDashboardPreview() {
       {creando ? (
         <TicketForm onSubmit={crearTicket} onCancel={() => setCreando(false)} />
       ) : (
-        ticketSeleccionado && <TicketDetail ticket={ticketSeleccionado} />
+        ticketSeleccionado && (
+          <TicketDetail
+            ticket={ticketSeleccionado}
+            cargandoRespuestas={cargandoRespuestas}
+            errorRespuestas={errorRespuestas}
+            onRetry={() => seleccionarTicket(ticketSeleccionado.id)}
+          />
+        )
       )}
     </ClientDashboardLayout>
   );

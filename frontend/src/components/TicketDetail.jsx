@@ -1,6 +1,7 @@
 import TicketResponses from "./TicketResponses";
+import Button from "./Button";
 
-export default function TicketDetail({ ticket }) {
+export default function TicketDetail({ ticket, cargandoRespuestas = false, errorRespuestas = "", onRetry }) {
   return (
     <div className="card ticket-card">
       <article className="ticket-detail">
@@ -27,6 +28,20 @@ export default function TicketDetail({ ticket }) {
           <h3>Descripción</h3>
           <p className="ticket-detail-body">{ticket.body}</p>
         </div>
+
+        {cargandoRespuestas ? (
+          <p>Cargando respuestas...</p>
+        ) : errorRespuestas ? (
+          <div role="alert">
+            <p className="field-error">{errorRespuestas}</p>
+            {onRetry && <Button variant="secondary" onClick={onRetry}>Reintentar</Button>}
+          </div>
+        ) : (
+          <TicketResponses
+            responses={ticket.responses}
+            emptyMessage="Todavía no hay respuestas."
+          />
+        )}
       </article>
     </div>
   );

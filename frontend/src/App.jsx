@@ -6,9 +6,9 @@ import Register  from "./components/pages/Register";
 import RutaProtegida from "./components/ProtectedRoute";
 import { ROLES } from "./utils/roles";
 
-import ClientDashboardPreview from "./components/pages/ClientDashboardPreview";
-import WorkerDashboardPreview from "./components/pages/WorkerDashboardPreview";
-import AdminDashboardPreview from "./components/pages/AdminDashboardPreview";
+import ClientDashboardPreview from "./components/pages/ClientDashboard";
+import WorkerDashboardPreview from "./components/pages/WorkerDashboard";
+import AdminDashboardPreview from "./components/pages/AdminDashboard";
 
 export default function App() {
   return (
@@ -24,8 +24,7 @@ export default function App() {
           <Route path="*" element={<h1>Página no encontrada</h1>} />
         </Route>
 
-        {/* Dashboards: llevan su propio header, por eso van fuera del Layout.
-            Temporal: siguen usando datos de ejemplo hasta conectar los tickets. */}
+        {/* Dashboards: llevan su propio header, por eso van fuera del Layout */}
         <Route element={<RutaProtegida roles={[ROLES.cliente]} />}>
           <Route path="/cuenta/tickets" element={<ClientDashboardPreview />} />
         </Route>
@@ -35,11 +34,6 @@ export default function App() {
         <Route element={<RutaProtegida roles={[ROLES.admin]} />}>
           <Route path="/admin/tickets" element={<AdminDashboardPreview />} />
         </Route>
-
-        {/* Demos sin login, para seguir maquetando */}
-        <Route path="/demo-cliente" element={<ClientDashboardPreview />} />
-        <Route path="/demo-trabajador" element={<WorkerDashboardPreview />} />
-        <Route path="/demo-admin" element={<AdminDashboardPreview />} />
       </Routes>
     </BrowserRouter>
   );

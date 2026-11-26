@@ -1,5 +1,14 @@
-export default function TicketResponses({ responses = [] }) {
-  if (responses.length === 0) return null;
+export default function TicketResponses({ responses = [], emptyMessage }) {
+  if (responses.length === 0) {
+    // sin emptyMessage no se pinta nada
+    if (!emptyMessage) return null;
+    return (
+      <section className="ticket-responses">
+        <h3>Respuestas</h3>
+        <p>{emptyMessage}</p>
+      </section>
+    );
+  }
 
   return (
     <section className="ticket-responses">

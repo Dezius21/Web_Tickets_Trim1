@@ -7,8 +7,6 @@ import { KPIS } from "../../utils/ticketKpis";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../utils/api";
 
-const NOMBRE_DEMO = "Cameron Winter"; // solo se usa en /demo-trabajador (sin login)
-
 // MongoDB devuelve _id; los componentes del dashboard usan id
 const conId = (t) => ({ ...t, id: t._id });
 
@@ -25,7 +23,7 @@ const mensaje = (err, texto) => (err.status === 0 ? err.message : texto);
 
 export default function WorkerDashboardPreview() {
   const { user, logout } = useAuth();
-  const nombre = user?.username ?? NOMBRE_DEMO;
+  const nombre = user?.username;
   const [tickets, setTickets] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");

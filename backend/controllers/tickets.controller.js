@@ -1,4 +1,7 @@
+const mongoose = require('mongoose')
 const Ticket = require('../models/tickets.model.js');
+const User = require('../models/users.model.js')
+
 
 const createTicket = async (req, res) => {
   try {

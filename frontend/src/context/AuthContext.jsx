@@ -2,15 +2,15 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 import { api, setAlCaducarSesion } from "../utils/api";
 
 // El backend aún tiene las rutas de auth bajo /test. Cuando las muevan, solo hay que cambiar estas dos líneas.
-const RUTA_LOGIN = "/test/login";
-const RUTA_REGISTER = "/test/register";
+const RUTA_LOGIN = "/users/login";
+const RUTA_REGISTER = "/users/register";
 
 const AuthContext = createContext(null);
 
 // Al abrir la web (o recargar con F5) recuperamos la sesión guardada
 function leerSesion() {
   try {
-    const token = localStorage.getItem("token");
+    const token = localsorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
     return token && user ? user : null;
   } catch {

@@ -18,15 +18,6 @@ app.use("/api/tickets", ticketsRouter);
 app.use("/api/properties", propertiesRouter);
 app.use("/api/users", usersRouter);
 
-app.get("/api/test-auth", verifyToken, (req, res) => {
-  res.json({ user: req.user }); //HAY QUE BORRAR 
-});
-
-app.post("/api/test/register", validateRegister, registerUser);
-app.post("/api/test/login", validateLogin, loginUser);
-
-app.get("/api/test-admin", verifyToken, isAdmin, (req, res) => res.json({ ok: true }));
-app.get("/api/test-owner/:id", verifyToken, checkUserOwnership, (req, res) => res.json({ ok: true }));
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

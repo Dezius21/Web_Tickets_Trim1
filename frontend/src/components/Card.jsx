@@ -1,9 +1,9 @@
 import "../blocks/card.css";
 
-export default function Card({icon, title, children}){
+export default function Card({image, title, children}){
     return (
         <article className="card">
-            {icon && <span className="card-icon" aria-hidden="true">{icon}</span>}
+            {image && <img className="card-image" src={image} alt="" />}
             <h3>{title}</h3>
             <p>{children}</p>
         </article>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-const API_URL = "http://localhost:3000/api";
 import Input from "../Input";
 import Button from "../Button";
+import { useAuth } from "../../context/AuthContext";
+import { rutaInicio } from "../../utils/roles";
 import "../../blocks/auth.css";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
@@ -38,6 +39,8 @@ function validate(form) {
 }
 
 export default function Register() {
+  const navigate = useNavigate();
+  const { register, login } = useAuth();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -45,24 +48,48 @@ export default function Register() {
     confirm: "",
   });
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
     setErrors({ ...errors, [name]: "" });
-    setMessage("");
+    setServerError("");
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const newErrors = validate(form);
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    console.log("Registro válido:", form.name, form.email);
-    setMessage("Todo ok falta conexion al server.");
+    setLoading(true);
+    setServerError("");
+
+    try {
+      const email = form.email.trim();
+      await register(form.name.trim(), email, form.password);
+      // el backend no devuelve token al registrar: entramos con las mismas credenciales
+      const usuario = await login(email, form.password);
+      navigate(rutaInicio(usuario.role));
+    } catch (err) {
+      if (err.errors) {
+        // errores por campo del backend (el campo "name" del form es "username" allí)
+        setErrors({
+          name: err.errors.username,
+          email: err.errors.email,
+          password: err.errors.password,
+        });
+      } else if (err.status === 409) {
+        setServerError("Ya existe una cuenta con ese email o nombre de usuario.");
+      } else {
+        setServerError(err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -116,12 +143,13 @@ export default function Register() {
           />
 
 
-          <Button type="submit">Crear cuenta</Button>
+          {serverError && (
+            <p className="field-error" role="alert">{serverError}</p>
+          )}
+          <Button type="submit" disabled={loading}>
+            {loading ? "Creando cuenta..." : "Crear cuenta"}
+          </Button>
         </form>
-
-        {message && (
-          <p className="auth-message" role="status">{message}</p>
-        )}
 
         <p className="auth-switch">
           ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>

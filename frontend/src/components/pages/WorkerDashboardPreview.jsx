@@ -5,10 +5,13 @@ import WorkerTicketList from "../WorkerTicketList";
 import TicketModal from "../TicketModal";
 import { KPIS } from "../../utils/ticketKpis";
 import { TICKETS_EJEMPLO } from "../../utils/mockTickets";
+import { useAuth } from "../../context/AuthContext";
 
-const NOMBRE_TRABAJADOR = "Cameron Winter"; // temporal: luego vendrá del AuthContext
+const NOMBRE_DEMO = "Cameron Winter"; // solo se usa en /demo-trabajador (sin login)
 
 export default function WorkerDashboardPreview() {
+  const { user, logout } = useAuth();
+  const nombre = user?.username ?? NOMBRE_DEMO;
   const [tickets, setTickets] = useState(TICKETS_EJEMPLO); // temporal: luego vendrán de la API
   const [kpiId, setKpiId] = useState(null);
   const [seleccionadoId, setSeleccionadoId] = useState(null);
@@ -33,7 +36,7 @@ export default function WorkerDashboardPreview() {
                 ...responses,
                 {
                   id: crypto.randomUUID(),
-                  author: NOMBRE_TRABAJADOR,
+                  author: nombre,
                   text: response,
                   createdAt: new Date().toISOString(),
                 },
@@ -47,7 +50,8 @@ export default function WorkerDashboardPreview() {
 
   return (
     <WorkerDashboardLayout
-      userName={NOMBRE_TRABAJADOR}
+      userName={nombre}
+      onLogout={logout}
       placeholder="Selecciona un indicador para ver sus tickets"
       sidebarTitle="Resumen"
       sidebar={

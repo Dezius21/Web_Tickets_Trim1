@@ -4,8 +4,10 @@ import ClientDashboardLayout from "../layouts/ClientDashboardLayout";
 import TicketForm from "../TicketForm";
 import TicketHistory from "../TicketHistory";
 import TicketDetail from "../TicketDetail";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ClientDashboardPreview() {
+  const { user, logout } = useAuth(); // sin login (ruta /demo-cliente) user es null
   const [tickets, setTickets] = useState([]);
   const [creando, setCreando] = useState(false);
   const [seleccionadoId, setSeleccionadoId] = useState(null);
@@ -35,7 +37,8 @@ export default function ClientDashboardPreview() {
 
   return (
     <ClientDashboardLayout
-      userName="Carlos Deza"
+      userName={user?.username ?? "Carlos Deza"}
+      onLogout={logout}
       action={
         <Button onClick={abrirFormulario} disabled={creando}>
           + Nuevo ticket

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Input from "./Input";
-import Textarea from "./Textarea";
+import Textarea from "./TextArea";
 import Select from "./Select";
 import Button from "./Button";
 import { CATEGORIAS } from "../utils/ticketOptions";

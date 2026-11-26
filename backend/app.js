@@ -16,6 +16,7 @@ app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
 app.use("/api/tickets", ticketsRouter);
 app.use("/api/properties", propertiesRouter);
+app.use("/api/users", usersRouter);
 
 app.get("/api/test-auth", verifyToken, (req, res) => {
   res.json({ user: req.user }); //HAY QUE BORRAR 

@@ -73,6 +73,12 @@
 .kpi-urgentes    { --kpi-bg: #c2410c; }
 .kpi-completados { --kpi-bg: #15803d; }
 
+/* KPIs del admin */
+.kpi-asignados          { --kpi-bg: #0f766e; }
+.kpi-porAsignar         { --kpi-bg: #0369a1; }
+.kpi-urgentesAsignados  { --kpi-bg: #b45309; }
+.kpi-urgentesPorAsignar { --kpi-bg: #c2410c; }
+
 .worker-list h2 {
   margin-top: 0;
 }

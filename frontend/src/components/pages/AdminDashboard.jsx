@@ -3,8 +3,11 @@ import WorkerDashboardLayout from "../layouts/WorkerDashboardLayout";
 import WorkerKpis from "../WorkerKpis";
 import WorkerTicketList from "../WorkerTicketList";
 import AdminTicketModal from "../AdminTicketModal";
+import NewWorkerModal from "../NewWorkerModal";
+import Button from "../Button";
 import { AdminKPIS } from "../../utils/adminKpis";
 import { useAuth } from "../../context/AuthContext";
+import { ROLES } from "../../utils/roles";
 import { api } from "../../utils/api";
 
 const NOMBRE_DEMO = "Julian Casablancas"; // solo se usa en /demo-admin (sin login)
@@ -29,13 +32,15 @@ const aRespuestas = (replies = []) =>
 const mensaje = (err, texto) => (err.status === 0 ? err.message : texto);
 
 export default function AdminDashboardPreview() {
-  const { user, logout } = useAuth();
+  const { user, logout, register } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [trabajadores, setTrabajadores] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
   const [kpiId, setKpiId] = useState(null);
   const [seleccionadoId, setSeleccionadoId] = useState(null);
+  const [registrando, setRegistrando] = useState(false);
+  const [aviso, setAviso] = useState("");
 
   const kpiActivo = AdminKPIS.find((k) => k.id === kpiId);
   const ticketsFiltrados = kpiActivo ? tickets.filter(kpiActivo.filter) : [];
@@ -67,6 +72,7 @@ export default function AdminDashboardPreview() {
   // El listado no trae el nombre de quien respondió; el detalle sí
   async function abrirTicket(id) {
     setError("");
+    setAviso("");
     try {
       const detalle = await api(`/tickets/${id}`);
       setTickets((prev) =>
@@ -111,10 +117,49 @@ export default function AdminDashboardPreview() {
     }
   }
 
+  // Crear un trabajador son dos pasos con la API que ya existe:
+  // 1) registrar la cuenta (el backend siempre la crea como Inquilino)
+  // 2) cambiarle el rol a Contratista (solo un administrador puede)
+  // Si el paso 1 falla, el error llega al modal (nombre repetido, email mal...).
+  async function crearTrabajador({ username, email, password }) {
+    const res = await register(username, email, password);
+    const id = res.data.id;
+
+    try {
+      await api(`/users/${id}/permissions`, {
+        method: "PATCH",
+        body: { role: ROLES.trabajador },
+      });
+    } catch {
+      // la cuenta existe pero se quedó como Inquilino
+      setRegistrando(false);
+      setError(
+        `La cuenta «${username}» se creó, pero no se pudo convertir en trabajador. Hay que cambiarle el rol a mano.`
+      );
+      return;
+    }
+
+    setTrabajadores((prev) => [...prev, { id, username }]);
+    setError("");
+    setAviso(`Trabajador «${username}» creado correctamente.`);
+    setRegistrando(false);
+  }
+
   return (
     <WorkerDashboardLayout
       userName={user?.username ?? NOMBRE_DEMO}
       onLogout={logout}
+      headerActions={
+        <Button
+          variant="ok"
+          onClick={() => {
+            setAviso("");
+            setRegistrando(true);
+          }}
+        >
+          + Nuevo trabajador
+        </Button>
+      }
       placeholder="Selecciona un indicador para ver sus tickets"
       sidebarTitle="Resumen"
       sidebar={
@@ -131,6 +176,7 @@ export default function AdminDashboardPreview() {
       }
     >
       {error ? <p className="field-error" role="alert">{error}</p> : null}
+      {aviso ? <p className="status-ok" role="status">{aviso}</p> : null}
 
       {kpiActivo && (
         <WorkerTicketList
@@ -147,6 +193,13 @@ export default function AdminDashboardPreview() {
           trabajadores={trabajadores}
           onSave={guardarCambios}
           onClose={() => setSeleccionadoId(null)}
+        />
+      )}
+
+      {registrando && (
+        <NewWorkerModal
+          onSave={crearTrabajador}
+          onClose={() => setRegistrando(false)}
         />
       )}
     </WorkerDashboardLayout>

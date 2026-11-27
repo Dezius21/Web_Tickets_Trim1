@@ -36,6 +36,26 @@
   color:#fff;
 }
 
+/* Contenedor de los botones de la derecha de la cabecera */
+.dashboard-header-actions {
+  justify-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+
+.dashboard-header .btn-ok {
+  background-color: var(--color-success);
+}
+
+/* Mensaje de confirmación (por ejemplo, «Trabajador creado») */
+.status-ok {
+  margin: 0 0 1rem;
+  font-weight: 600;
+  color: var(--color-success-dark);
+}
+
 .dashboard-body {
   flex: 1;
   min-height: 0;

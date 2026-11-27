@@ -5,6 +5,7 @@ import WorkerSidePanel from "../WorkerDashboardSidePanel";
 export default function WorkerDashboardLayout({
   userName,
   onLogout,
+  headerActions,  // botones extra en la cabecera
   action,         
   placeholder,    
   sidebarTitle,   
@@ -15,7 +16,7 @@ export default function WorkerDashboardLayout({
     <div className="dashboard dashboard-worker">
       <a href="#contenido" className="skip">Saltar al contenido</a>
 
-      <WorkerDashboardHeader userName={userName} onLogout={onLogout} />
+      <WorkerDashboardHeader userName={userName} onLogout={onLogout} actions={headerActions} />
 
       <main id="contenido" className="dashboard-body">
         <WorkerMainPanel action={action} placeholder={placeholder}>

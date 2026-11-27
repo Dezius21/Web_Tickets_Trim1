@@ -1,39 +1,64 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { api, setAlCaducarSesion } from "../utils/api";
+
+// El backend aún tiene las rutas de auth bajo /test. Cuando las muevan, solo hay que cambiar estas dos líneas.
+const RUTA_LOGIN = "/users/login";
+const RUTA_REGISTER = "/users/register";
 
 const AuthContext = createContext(null);
 
-function leerUsuarioGuardado() {
+// Al abrir la web (o recargar con F5) recuperamos la sesión guardada
+function leerSesion() {
   try {
-    return JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    return token && user ? user : null;
   } catch {
     return null;
   }
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(leerUsuarioGuardado);
+  const [user, setUser] = useState(leerSesion);
 
-  async function login(email, password) {
-    // sustituir por la llamada real al backend
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    const usuario = {
-      nombre: email.split("@")[0],
-      email,
-      rol: email.startsWith("agente") ? "agente" : "cliente",
-    };
-
-    localStorage.setItem("user", JSON.stringify(usuario));
-    setUser(usuario);
-    return usuario;
-  }
-
-  function logout() {
+  const logout = useCallback(() => {
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
+  }, []);
+
+  // Si el backend responde 401 (token caducado o inválido), cerramos sesión
+  useEffect(() => {
+    setAlCaducarSesion(logout);
+    return () => setAlCaducarSesion(null);
+  }, [logout]);
+
+  async function login(email, password) {
+    const data = await api(RUTA_LOGIN, {
+      method: "POST",
+      body: { email, password },
+      auth: false,
+    });
+
+    // data = { message, token, user: { id, username, email, role } }
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    setUser(data.user);
+    return data.user;
+  }
+
+  // El backend crea siempre el usuario con rol "Inquilino" y NO devuelve token,
+  // por eso el que llama debe hacer login después.
+  async function register(username, email, password) {
+    return api(RUTA_REGISTER, {
+      method: "POST",
+      body: { username, email, password },
+      auth: false,
+    });
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

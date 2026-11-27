@@ -6,11 +6,12 @@
   box-shadow: var(--shadow-hard);
   text-align: center;
 }
-
-.card-icon {
+.card-image {
   display: block;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 0.5rem;
+  object-fit: contain;
 }
 
 .card h3 {

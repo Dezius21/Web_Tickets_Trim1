@@ -1,66 +1,76 @@
-import { use, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../Input";
 import Button from "../Button";
+import { useAuth } from "../../context/AuthContext";
+import { rutaInicio } from "../../utils/roles";
 import "../../blocks/auth.css";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 
-function validate(form){
+function validate(form) {
   const errors = {};
 
-  if(!form.email.trim())
-  {
+  if (!form.email.trim()) {
     errors.email = "Escribe tu email";
-  }
-  else if(!EMAIL_REGEX.test(form.email))
-  {
-    errors.email = "El email no tiene un formato valido"
+  } else if (!EMAIL_REGEX.test(form.email)) {
+    errors.email = "El email no tiene un formato válido";
   }
 
-  if(!form.password)
-  {
-    errors.password = "Escribe tu contraseña"
+  if (!form.password) {
+    errors.password = "Escribe tu contraseña";
   }
 
   return errors;
 }
 
-export default function Login(){
-
-  const [form, setForm] = useState({email: "", password: ""});
+export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleChange(e){
-    const {name, value} = e.target;
-    setForm({...form, [name]: value});
-    setErrors({...errors, [name]: ""});
-    setMessage("");
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+    setErrors({ ...errors, [name]: "" });
+    setServerError("");
   }
 
-  function handleSubmit(e){
+  async function handleSubmit(e) {
     e.preventDefault();
-    
+
     const newErrors = validate(form);
     setErrors(newErrors);
-    if(Object.keys(newErrors).length > 0) return;
+    if (Object.keys(newErrors).length > 0) return;
 
-    console.log("login valido", form.email);
+    setLoading(true);
+    setServerError("");
 
-    setMessage("Todo ok falta conexion al server");
+    try {
+      const usuario = await login(form.email.trim(), form.password);
+      navigate(rutaInicio(usuario.role));
+    } catch (err) {
+      setServerError(
+        err.status === 401 ? "Email o contraseña incorrectos." : err.message
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
-  return(
+  return (
     <section className="auth">
       <div className="auth-card">
         <h1>Iniciar sesión</h1>
         <p className="auth-intro">
-          Accedde para pedir servicios y reportar incidencias
+          Accede para pedir servicios y reportar incidencias
         </p>
 
         <form onSubmit={handleSubmit} noValidate>
-           <Input
+          <Input
             id="email"
             name="email"
             type="email"
@@ -80,16 +90,18 @@ export default function Login(){
             onChange={handleChange}
             error={errors.password}
           />
-          <Button type="submit">Entrar</Button>
+          {serverError && (
+            <p className="field-error" role="alert">{serverError}</p>
+          )}
+          <Button type="submit" disabled={loading}>
+            {loading ? "Entrando..." : "Entrar"}
+          </Button>
         </form>
-        {message && (
-          <p className="auth-message" role="status">{message}</p>
-        )}
 
         <p className="auth-switch">
           ¿No tienes cuenta? <Link to="/register">Crea una cuenta</Link>
         </p>
       </div>
     </section>
-  )
+  );
 }

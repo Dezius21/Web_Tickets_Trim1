@@ -15,7 +15,7 @@ const getProperties = async (req, res) => {
       filter.address = {$regex: search, $options: 'i'};
     }
 
-    const result = await PropertySchema.find(filter).populate('ownedby', 'nombre email rol');
+    const result = await PropertySchema.find(filter).populate('ownedby', 'username email role');
     return res.status(200).json(result);
   }catch(error){
     console.log(`Error al obtener los datos: ${error}`);
@@ -28,8 +28,8 @@ const getProperties = async (req, res) => {
 const getPropertyById = async (req, res) => {
   try{
     const property = await PropertySchema.findById(req.params.id)
-      .populate('ownedby', 'nombre email rol')
-      .populate('tenants.tenantId', 'nombre email');
+      .populate('ownedby', 'username email role')
+      .populate('tenants.tenantId', 'username email');
     if(!property) {
       return res.status(404).json({ message: 'Propiedad no encontrada' });
     }

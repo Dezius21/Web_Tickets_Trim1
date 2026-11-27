@@ -173,9 +173,27 @@ const updateUserRoleOrStatus = async (req, res) => {
   }
 };
 
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    return res.status(200).json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error retrieving current user', error: error.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  getCurrentUser,
   getUsers,
   getUserById,
   updateUserProfile,

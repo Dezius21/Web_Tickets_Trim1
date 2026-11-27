@@ -1,5 +1,5 @@
 import WorkerDashboardHeader from "../WorkerDashboardHeader";
-import WorkerMainPanel from "../WorkerDashboardMainPanel";
+import WorkerMainPanel from "../WorkerDashBoardMainPanel";
 import WorkerSidePanel from "../WorkerDashboardSidePanel";
 
 export default function WorkerDashboardLayout({

@@ -19,11 +19,12 @@
   z-index: -1;
   background: var(--hero-img) center / cover no-repeat;
   opacity: 0.3;
-  @keyframes hero-bg-in {
+}
+
+@keyframes hero-bg-in {
   from { opacity: 0; transform: scale(1.06); }
   to   { opacity: 0.3; transform: scale(1); }
   }
-}
 
 .hero-content {
   max-width: 40rem;

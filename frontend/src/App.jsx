@@ -12,7 +12,7 @@ import AdminDashboardPreview from "./components/pages/AdminDashboard";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         {/* Páginas con navbar y footer */}
         <Route element={<Layout />}>
